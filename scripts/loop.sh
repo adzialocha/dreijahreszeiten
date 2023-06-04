@@ -127,6 +127,7 @@ safe_reset_all () {
 	play_epaper_video 1_Wasser.mp4
 	play_wide_video 1_Wasser.mp4
 	play_audio 1_Wasser.wav
+	# standby 5 12 && send_udp_to_arduino 1 "test" &
 	standby 12 29
 	safe_reset_all
 }
