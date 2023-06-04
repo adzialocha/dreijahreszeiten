@@ -8,7 +8,7 @@ source $SCRIPT_DIR/common.sh
 FILES_DIR=$BASE_DIR/files
 
 # Only take nth frame from video for epaper display to get to 5fps
-EPAPER_TAKE=2
+EPAPER_TAKE=6
 
 # Bright Sign display
 BRIGHT_SIGN_HOST=192.168.1.100
@@ -59,7 +59,7 @@ send_udp_to_arduino () {
 play_audio () {
 	echo "▶ [audio] play $1"
 	stop_process aplay
-	aplay --quiet $FILES_DIR/audio/$1 &
+	aplay --quiet $FILES_DIR/audio/$1 2> /dev/null &
 }
 
 play_square_video () {
@@ -73,13 +73,32 @@ play_wide_video () {
 	mplayer -vo xv -nosound -really-quiet $FILES_DIR/video-wide/$1 &
 }
 
-safe_reset_all () {
+play_epaper_video () {
+	echo "▶ [epaper] play video $1"
+	stop_process it8951-video
+	it8951-video --take $EPAPER_TAKE $FILES_DIR/video-epaper/$1 &> /dev/null &
+}
+
+stop_process () {
+	pkill -INT $1
+}
+
+reset_except_it8951 () {
 	# play_square_video @TODO: Add standby screen here
 	# send_udp_to_arduino 1 0 @TODO: Add standby mode here
 	# send_udp_to_arduino 2 0 @TODO: Add standby mode here
 	# send_udp_to_arduino 3 0 @TODO: Add standby mode here
 	stop_process aplay
 	stop_process mplayer
+}
+
+reset_all () {
+	reset_except_it8951
+	stop_process it8951-video
+}
+
+safe_reset_all () {
+	reset_except_it8951
 	is_running=$(ps aux | grep it8951-video | grep -v grep)
 	if [[ -n "$is_running" ]]; then
 		stop_process it8951-video
@@ -88,19 +107,11 @@ safe_reset_all () {
 	fi
 }
 
-play_epaper_video () {
-	echo "▶ [epaper] play video $1"
-	stop_process it8951-video
-	it8951-video --take $EPAPER_TAKE $FILES_DIR/video-epaper/$1 &> /dev/null &
-}
-
-# Make sure to reset all processes before, just to be safe
-safe_reset_all
-
 # 0. Prolog
 # 00:01:38.00
 0_prolog () {
 	print_title "prolog"
+	# play_square_video 0
 	# play_epaper_video 0_Prolog.mp4
 	# play_wide_video 0_Prolog.mp4
 	play_audio 0_Prolog.wav
@@ -112,6 +123,7 @@ safe_reset_all
 # 00:12:28.39
 1_wasser () {
 	print_title "wasser"
+	# play_square_video 1
 	play_epaper_video 1_Wasser.mp4
 	play_wide_video 1_Wasser.mp4
 	play_audio 1_Wasser.wav
@@ -123,6 +135,7 @@ safe_reset_all
 # 00:05:53.13
 2_sonne () {
 	print_title "sonne"
+	# play_square_video 2
 	# play_epaper_video 2_Sonne.mp4
 	# play_wide_video 2_Sonne.mp4
 	play_audio 2_Sonne.wav
@@ -134,6 +147,7 @@ safe_reset_all
 # 00:07:19.58
 3_wind () {
 	print_title "wind"
+	# play_square_video 3
 	# play_epaper_video 3_Wind.mp4
 	# play_wide_video 3_Wind.mp4
 	play_audio 3_Wind.wav
@@ -145,6 +159,7 @@ safe_reset_all
 # 00:05:20.24
 4_anbahnung_der_revolution () {
 	print_title "anbahnung"
+	# play_square_video 4
 	# play_epaper_video 4_AnbahnungDerRevolution.mp4
 	# play_wide_video 4_AnbahnungDerRevolution.mp4
 	play_audio 4_AnbahnungDerRevolution.wav
@@ -156,6 +171,7 @@ safe_reset_all
 # 00:03:16.86
 5_feuer () {
 	print_title "feuer"
+	# play_square_video 5
 	# play_epaper_video 5_Feuer.mp4
 	# play_wide_video 5_Feuer.mp4
 	play_audio 5_Feuer.wav
@@ -167,6 +183,7 @@ safe_reset_all
 # 00:20:00.00
 6_revolution () {
 	print_title "revolution"
+	# play_square_video 6
 	# play_epaper_video 6_Revolution.mp4
 	# play_wide_video 6_Revolution.mp4
 	play_audio 6_Revolution.wav
@@ -187,6 +204,19 @@ loop () {
 		6_revolution
 	done
 }
+
+shutdown () {
+	echo "Graceful shutdown"
+	reset_all
+}
+
+# Set up a trap to always run shutdown function before we exit script
+trap shutdown EXIT
+
+clear
+
+# Make sure to reset all processes before, just to be safe
+safe_reset_all
 
 if [[ -z $1 ]]; then
 	loop
