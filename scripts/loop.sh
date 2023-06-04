@@ -47,9 +47,59 @@ safe_reset_all
 # This is our main installation loop, running forever!
 while true
 do
+	# 0. Prolog
+	# 00:01:38.00
+	# play_epaper_video 0_Prolog.mp4
+	# play_wide_video 0_Prolog.mp4
+	play_audio 0_Prolog.wav
+	standby 1 39
 	safe_reset_all
+
+	# 1. Wasser
+	# 00:12:28.39
 	play_epaper_video 1_Wasser.mp4
 	play_wide_video 1_Wasser.mp4
 	play_audio 1_Wasser.wav
-	standby 0 10
+	standby 12 29
+	safe_reset_all
+
+	# 2. Sonne
+	# 00:05:53.13
+	# play_epaper_video 2_Sonne.mp4
+	# play_wide_video 2_Sonne.mp4
+	play_audio 2_Sonne.wav
+	standby 5 54
+	safe_reset_all
+
+	# 3. Wind
+	# 00:07:19.58
+	# play_epaper_video 3_Wind.mp4
+	# play_wide_video 3_Wind.mp4
+	play_audio 3_Wind.wav
+	standby 7 20
+	safe_reset_all
+
+	# 4. Anbahnung der Revolution
+	# 00:05:20.24
+	# play_epaper_video 4_AnbahnungDerRevolution.mp4
+	# play_wide_video 4_AnbahnungDerRevolution.mp4
+	play_audio 4_AnbahnungDerRevolution.wav
+	standby 5 21
+	safe_reset_all
+
+	# 5. Feuer
+	# 00:03:16.86
+	# play_epaper_video 5_Feuer.mp4
+	# play_wide_video 5_Feuer.mp4
+	play_audio 5_Feuer.wav
+	standby 3 18
+	safe_reset_all
+
+	# 6. Revolution
+	# 00:20:00.00
+	# play_epaper_video 6_Revolution.mp4
+	# play_wide_video 6_Revolution.mp4
+	play_audio 6_Revolution.wav
+	standby 20 1
+	safe_reset_all
 done
