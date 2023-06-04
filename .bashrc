@@ -118,4 +118,6 @@ fi
 
 . "$HOME/.cargo/env"
 
+alias attach='$HOME/dreijahreszeiten/scripts/attach.sh'
+
 $HOME/dreijahreszeiten/scripts/start.sh
