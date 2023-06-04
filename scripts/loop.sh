@@ -6,6 +6,9 @@ source $SCRIPT_DIR/common.sh
 
 FILES_DIR=$BASE_DIR/files
 
+# Only take nth frame from video for epaper display to get to 5fps
+EPAPER_TAKE=2
+
 standby () {
 	seconds=$((($1 * 60) + $2))
 	echo "⏹ wait for $seconds seconds ($1:$2)"
@@ -16,6 +19,11 @@ play_audio () {
 	echo "▶ play audio $1"
 	stop_process aplay
 	aplay --quiet $FILES_DIR/audio/$1 &
+}
+
+play_main_video () {
+	echo "▶ [main] play video $1"
+	# @TODO
 }
 
 play_wide_video () {
@@ -38,7 +46,7 @@ safe_reset_all () {
 play_epaper_video () {
 	echo "▶ [epaper] play video $1"
 	stop_process it8951-video
-	it8951-video --take 2 $FILES_DIR/video-epaper/$1 &> /dev/null &
+	it8951-video --take $EPAPER_TAKE $FILES_DIR/video-epaper/$1 &> /dev/null &
 }
 
 # Make sure to reset all processes before, just to be safe
