@@ -77,6 +77,8 @@ play_epaper_video () {
 	echo "▶ [epaper] play video $1"
 	stop_process it8951-video
 	it8951-video --take $EPAPER_TAKE $FILES_DIR/video-epaper/$1 &> /dev/null &
+	# Make the others wait a little bit since the display takes some time to start
+	sleep 0.5
 }
 
 stop_process () {
