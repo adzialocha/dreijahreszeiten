@@ -19,13 +19,13 @@ standby () {
 play_wide_video () {
 	echo "▶ [wide] play video $1"
 	stop_process mplayer
-	mplayer -vo xv -nosound -really-quiet $FILES_DIR/$1 &
+	mplayer -vo xv -nosound -really-quiet $FILES_DIR/video-wide/$1 &
 }
 
 play_epaper_video () {
 	echo "▶ [epaper] play video $1"
 	stop_process it8951
-	it8951 --take 2 $FILES_DIR/$1 &
+	it8951 --take 2 $FILES_DIR/video-epaper/$1 &
 }
 
 while true

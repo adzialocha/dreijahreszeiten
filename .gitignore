@@ -1,2 +1,10 @@
-files
 !files/.gitkeep
+
+files/audio/*
+!files/audio/.gitkeep
+
+files/video-wide/*
+!files/video-wide/.gitkeep
+
+files/video-epaper/*
+!files/video-epaper/.gitkeep
