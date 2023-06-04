@@ -4,10 +4,23 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source $SCRIPT_DIR/common.sh
 
+# Base folder where all media files live
 FILES_DIR=$BASE_DIR/files
 
 # Only take nth frame from video for epaper display to get to 5fps
 EPAPER_TAKE=2
+
+# Bright Sign display
+BRIGHT_SIGN_HOST=192.168.1.100
+BRIGHT_SIGN_PORT=3000
+
+# Arduino Nanos
+ARDUINO_1_HOST=192.168.1.100
+ARDUINO_1_PORT=3000
+ARDUINO_2_HOST=192.168.1.100
+ARDUINO_2_PORT=3000
+ARDUINO_3_HOST=192.168.1.100
+ARDUINO_3_PORT=3000
 
 standby () {
 	seconds=$((($1 * 60) + $2))
@@ -15,15 +28,36 @@ standby () {
 	sleep $seconds
 }
 
+send_udp () {
+	echo $1 > /dev/udp/$2/$3
+}
+
+send_udp_to_bright_sign () {
+	send_udp $1 $BRIGHT_SIGN_HOST $BRIGHT_SIGN_PORT
+}
+
+send_udp_to_arduino () {
+	echo "▶ [arduino] send command $2 to arduino $1"
+	if [[ $1 -eq 1 ]]; then
+		send_udp $2 $ARDUINO_1_HOST $ARDUINO_1_PORT
+	elif [[ $1 -eq 2 ]]; then
+		send_udp $2 $ARDUINO_2_HOST $ARDUINO_2_PORT
+	elif [[ $1 -eq 3 ]]; then
+		send_udp $2 $ARDUINO_3_HOST $ARDUINO_3_PORT
+	else
+		echo "! warning: unknown arduino identifier"
+	fi
+}
+
 play_audio () {
-	echo "▶ play audio $1"
+	echo "▶ [audio] play $1"
 	stop_process aplay
 	aplay --quiet $FILES_DIR/audio/$1 &
 }
 
-play_main_video () {
-	echo "▶ [main] play video $1"
-	# @TODO
+play_square_video () {
+	echo "▶ [square] play video $1"
+	send_udp_to_bright_sign $1
 }
 
 play_wide_video () {
@@ -33,6 +67,10 @@ play_wide_video () {
 }
 
 safe_reset_all () {
+	# play_square_video @TODO: Add standby screen here
+	# send_udp_to_arduino 1 0 @TODO: Add standby mode here
+	# send_udp_to_arduino 2 0 @TODO: Add standby mode here
+	# send_udp_to_arduino 3 0 @TODO: Add standby mode here
 	stop_process aplay
 	stop_process mplayer
 	is_running=$(ps aux | grep it8951-video | grep -v grep)
