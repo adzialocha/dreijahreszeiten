@@ -6,7 +6,6 @@ Linux setup and control scripts to run "Die drei Jahreszeiten" theater installat
 
 * Tested on ASRock DeskMini 310 with Intel Core i7 8700T CPU, Samsung 970 Evo Plus 500GB and 16GB G.Skill Ripjaws memory
 * Operating System: Ubuntu Server 22.04.2
-* `bash`
 
 ### Install dependencies
 
@@ -15,6 +14,9 @@ Linux setup and control scripts to run "Die drei Jahreszeiten" theater installat
 * `mplayer`
 * `aplay`
 * [it8951-video](https://github.com/adzialocha/it8951-video)
+* `figlet`
+* `bash`
+* `tmux`
 
 ### Clone repository in home folder
 
