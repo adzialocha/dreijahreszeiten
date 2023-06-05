@@ -117,6 +117,7 @@ safe_reset_all () {
 	play_wide_video 1W.mp4
 	play_audio 1.wav
 	# standby 5 12 && send_udp_to_arduino 1 "test" &
+	send_udp_to_arduino 1 fenster,65000,2000
 	standby 12 29
 	safe_reset_all
 }
@@ -141,6 +142,7 @@ safe_reset_all () {
 	play_square_video 3S
 	play_wide_video 3W.mp4
 	play_audio 3.wav
+	send_udp_to_arduino 1 hongkong,42000,1200
 	standby 7 20
 	safe_reset_all
 }
@@ -165,6 +167,7 @@ safe_reset_all () {
 	play_square_video 5S
 	play_wide_video 5W.mp4
 	play_audio 5.wav
+	send_udp_to_arduino 1 eisberg,65000,1000
 	standby 3 18
 	safe_reset_all
 }
@@ -177,6 +180,7 @@ safe_reset_all () {
 	play_square_video 6S
 	play_wide_video 6W.mp4
 	play_audio 6.wav
+	send_udp_to_arduino 1 berlin,53000,1400
 	standby 20 1
 	safe_reset_all
 }
