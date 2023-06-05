@@ -228,6 +228,7 @@ loop () {
 }
 
 shutdown () {
+	echo ""
 	reset_all
 }
 
