@@ -202,8 +202,6 @@ shutdown () {
 # Set up a trap to always run shutdown function before we exit script
 trap shutdown EXIT
 
-clear
-
 # Make sure to reset all processes before, just to be safe
 safe_reset_all
 
