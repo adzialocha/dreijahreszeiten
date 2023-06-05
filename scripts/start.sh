@@ -4,6 +4,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source $SCRIPT_DIR/common.sh
 
+HTTP_PORT=80
 SCREEN_ROTATION=left
 SCREEN_OUTPUT=HDMI2
 
@@ -19,6 +20,11 @@ fi
 
 echo "🢒 Setup screen"
 xrandr --output $SCREEN_OUTPUT --rotate $SCREEN_ROTATION
+
+echo "🢒 Wait for brightsign controller to be ready"
+while ! nc -z $BRIGHT_SIGN_HOST $HTTP_PORT; do
+	sleep 0.5
+done
 
 echo "🢒 Start installation loop inside session"
 tmux new-session -d -t $TMUX_SESSION

@@ -10,20 +10,6 @@ FILES_DIR=$BASE_DIR/files
 # Only take nth frame from video for epaper display to get to 5fps
 EPAPER_TAKE=6
 
-# Bright Sign display
-BRIGHT_SIGN_HOST=192.168.1.111
-BRIGHT_SIGN_PORT=5000
-
-# Arduino Nanos
-ARDUINO_1_HOST=192.168.1.112
-ARDUINO_1_PORT=3000
-
-ARDUINO_2_HOST=192.168.1.113
-ARDUINO_2_PORT=3000
-
-ARDUINO_3_HOST=192.168.1.114
-ARDUINO_3_PORT=3000
-
 print_title () {
 	figlet -f slant $1
 	echo ""
@@ -114,8 +100,8 @@ safe_reset_all () {
 0_prolog () {
 	print_title "prolog"
 	play_square_video "0S"
-	play_epaper_video 0S.mp4
-	play_wide_video 0S.mp4
+	play_epaper_video 0E.mp4
+	play_wide_video 0W.mp4
 	play_audio 0.wav
 	standby 1 39
 	safe_reset_all
