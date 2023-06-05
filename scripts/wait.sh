@@ -6,7 +6,7 @@ source $SCRIPT_DIR/common.sh
 
 HTTP_PORT=80
 
-if [[ -z "$SKIP_BRIGHT_SIGN" ]]; then
+if [[ -z "$SKIP_WAIT" ]]; then
 	echo "🢒 Wait for brightsign controller to be ready"
 	while ! nc -z $BRIGHT_SIGN_HOST $HTTP_PORT; do
 		sleep 0.5
