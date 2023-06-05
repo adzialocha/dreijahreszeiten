@@ -23,4 +23,4 @@ xrandr --output $SCREEN_OUTPUT --rotate $SCREEN_ROTATION
 
 echo "🢒 Start installation loop inside session"
 tmux new-session -d -t $TMUX_SESSION
-tmux send-keys -t $TMUX_SESSION:0.0 "$BASE_DIR/scripts/prepare.sh" Enter
+tmux send-keys -t $TMUX_SESSION:0.0 "$BASE_DIR/scripts/wait.sh" Enter

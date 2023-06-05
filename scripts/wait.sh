@@ -1,4 +1,5 @@
 #!/bin/bash
+# Wait for other devices to be ready before we start the loop
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source $SCRIPT_DIR/common.sh
