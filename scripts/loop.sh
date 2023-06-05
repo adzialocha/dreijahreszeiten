@@ -22,7 +22,7 @@ standby () {
 }
 
 send_udp () {
-	echo $1 > /dev/udp/$2/$3
+	rkpzavav --endpoint $2:$3 --message $1
 }
 
 send_udp_to_bright_sign () {
