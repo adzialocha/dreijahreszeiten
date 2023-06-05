@@ -68,16 +68,17 @@ play_epaper_video () {
 }
 
 stop_process () {
-	pkill -INT $1
+	pkill -INT -x $1
 }
 
 reset_except_it8951 () {
-	play_square_video "reset"
+	play_square_video ST
 	# send_udp_to_arduino 1 0 @TODO: Add standby mode here
 	# send_udp_to_arduino 2 0 @TODO: Add standby mode here
 	# send_udp_to_arduino 3 0 @TODO: Add standby mode here
 	stop_process aplay
 	stop_process mplayer
+	stop_process "sleep"
 }
 
 reset_all () {
@@ -99,8 +100,8 @@ safe_reset_all () {
 # 00:01:38.00
 0_prolog () {
 	print_title "prolog"
-	play_square_video "0S"
 	play_epaper_video 0E.mp4
+	play_square_video 0S
 	play_wide_video 0W.mp4
 	play_audio 0.wav
 	standby 1 39
@@ -111,8 +112,8 @@ safe_reset_all () {
 # 00:12:28.39
 1_wasser () {
 	print_title "wasser"
-	play_square_video "1S"
 	play_epaper_video 1E.mp4
+	play_square_video 1S
 	play_wide_video 1W.mp4
 	play_audio 1.wav
 	# standby 5 12 && send_udp_to_arduino 1 "test" &
@@ -124,8 +125,8 @@ safe_reset_all () {
 # 00:05:53.13
 2_sonne () {
 	print_title "sonne"
-	play_square_video "2S"
 	play_epaper_video 2E.mp4
+	play_square_video 2S
 	play_wide_video 2W.mp4
 	play_audio 2.wav
 	standby 5 54
@@ -136,8 +137,8 @@ safe_reset_all () {
 # 00:07:19.58
 3_wind () {
 	print_title "wind"
-	play_square_video "3S"
 	play_epaper_video 3E.mp4
+	play_square_video 3S
 	play_wide_video 3W.mp4
 	play_audio 3.wav
 	standby 7 20
@@ -148,8 +149,8 @@ safe_reset_all () {
 # 00:05:20.24
 4_anbahnung_der_revolution () {
 	print_title "anbahnung"
-	play_square_video "4S"
 	play_epaper_video 4E.mp4
+	play_square_video 4S
 	play_wide_video 4W.mp4
 	play_audio 4.wav
 	standby 5 21
@@ -160,8 +161,8 @@ safe_reset_all () {
 # 00:03:16.86
 5_feuer () {
 	print_title "feuer"
-	play_square_video "5S"
 	play_epaper_video 5E.mp4
+	play_square_video 5S
 	play_wide_video 5W.mp4
 	play_audio 5.wav
 	standby 3 18
@@ -172,8 +173,8 @@ safe_reset_all () {
 # 00:20:00.00
 6_revolution () {
 	print_title "revolution"
-	play_square_video "6S"
 	play_epaper_video 6E.mp4
+	play_square_video 6S
 	play_wide_video 6W.mp4
 	play_audio 6.wav
 	standby 20 1

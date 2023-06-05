@@ -21,11 +21,6 @@ fi
 echo "🢒 Setup screen"
 xrandr --output $SCREEN_OUTPUT --rotate $SCREEN_ROTATION
 
-echo "🢒 Wait for brightsign controller to be ready"
-while ! nc -z $BRIGHT_SIGN_HOST $HTTP_PORT; do
-	sleep 0.5
-done
-
 echo "🢒 Start installation loop inside session"
 tmux new-session -d -t $TMUX_SESSION
-tmux send-keys -t $TMUX_SESSION:0.0 "$BASE_DIR/scripts/loop.sh" Enter
+tmux send-keys -t $TMUX_SESSION:0.0 "$BASE_DIR/scripts/prepare.sh" Enter
