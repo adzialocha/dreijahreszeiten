@@ -11,17 +11,17 @@ FILES_DIR=$BASE_DIR/files
 EPAPER_TAKE=6
 
 # Bright Sign display
-BRIGHT_SIGN_HOST=192.168.1.100
-BRIGHT_SIGN_PORT=3000
+BRIGHT_SIGN_HOST=192.168.1.111
+BRIGHT_SIGN_PORT=5000
 
 # Arduino Nanos
-ARDUINO_1_HOST=192.168.1.100
+ARDUINO_1_HOST=192.168.1.112
 ARDUINO_1_PORT=3000
 
-ARDUINO_2_HOST=192.168.1.100
+ARDUINO_2_HOST=192.168.1.113
 ARDUINO_2_PORT=3000
 
-ARDUINO_3_HOST=192.168.1.100
+ARDUINO_3_HOST=192.168.1.114
 ARDUINO_3_PORT=3000
 
 print_title () {
@@ -86,7 +86,7 @@ stop_process () {
 }
 
 reset_except_it8951 () {
-	# play_square_video @TODO: Add standby screen here
+	play_square_video "reset"
 	# send_udp_to_arduino 1 0 @TODO: Add standby mode here
 	# send_udp_to_arduino 2 0 @TODO: Add standby mode here
 	# send_udp_to_arduino 3 0 @TODO: Add standby mode here
@@ -113,10 +113,10 @@ safe_reset_all () {
 # 00:01:38.00
 0_prolog () {
 	print_title "prolog"
-	# play_square_video 0
-	# play_epaper_video 0_Prolog.mp4
-	# play_wide_video 0_Prolog.mp4
-	play_audio 0_Prolog.wav
+	play_square_video "0S"
+	play_epaper_video 0S.mp4
+	play_wide_video 0S.mp4
+	play_audio 0.wav
 	standby 1 39
 	safe_reset_all
 }
@@ -125,10 +125,10 @@ safe_reset_all () {
 # 00:12:28.39
 1_wasser () {
 	print_title "wasser"
-	# play_square_video 1
-	play_epaper_video 1_Wasser.mp4
-	play_wide_video 1_Wasser.mp4
-	play_audio 1_Wasser.wav
+	play_square_video "1S"
+	play_epaper_video 1E.mp4
+	play_wide_video 1W.mp4
+	play_audio 1.wav
 	# standby 5 12 && send_udp_to_arduino 1 "test" &
 	standby 12 29
 	safe_reset_all
@@ -138,10 +138,10 @@ safe_reset_all () {
 # 00:05:53.13
 2_sonne () {
 	print_title "sonne"
-	# play_square_video 2
-	# play_epaper_video 2_Sonne.mp4
-	# play_wide_video 2_Sonne.mp4
-	play_audio 2_Sonne.wav
+	play_square_video "2S"
+	play_epaper_video 2E.mp4
+	play_wide_video 2W.mp4
+	play_audio 2.wav
 	standby 5 54
 	safe_reset_all
 }
@@ -150,10 +150,10 @@ safe_reset_all () {
 # 00:07:19.58
 3_wind () {
 	print_title "wind"
-	# play_square_video 3
-	# play_epaper_video 3_Wind.mp4
-	# play_wide_video 3_Wind.mp4
-	play_audio 3_Wind.wav
+	play_square_video "3S"
+	play_epaper_video 3E.mp4
+	play_wide_video 3W.mp4
+	play_audio 3.wav
 	standby 7 20
 	safe_reset_all
 }
@@ -162,10 +162,10 @@ safe_reset_all () {
 # 00:05:20.24
 4_anbahnung_der_revolution () {
 	print_title "anbahnung"
-	# play_square_video 4
-	# play_epaper_video 4_AnbahnungDerRevolution.mp4
-	# play_wide_video 4_AnbahnungDerRevolution.mp4
-	play_audio 4_AnbahnungDerRevolution.wav
+	play_square_video "4S"
+	play_epaper_video 4E.mp4
+	play_wide_video 4W.mp4
+	play_audio 4.wav
 	standby 5 21
 	safe_reset_all
 }
@@ -174,10 +174,10 @@ safe_reset_all () {
 # 00:03:16.86
 5_feuer () {
 	print_title "feuer"
-	# play_square_video 5
-	# play_epaper_video 5_Feuer.mp4
-	# play_wide_video 5_Feuer.mp4
-	play_audio 5_Feuer.wav
+	play_square_video "5S"
+	play_epaper_video 5E.mp4
+	play_wide_video 5W.mp4
+	play_audio 5.wav
 	standby 3 18
 	safe_reset_all
 }
@@ -186,10 +186,10 @@ safe_reset_all () {
 # 00:20:00.00
 6_revolution () {
 	print_title "revolution"
-	# play_square_video 6
-	# play_epaper_video 6_Revolution.mp4
-	# play_wide_video 6_Revolution.mp4
-	play_audio 6_Revolution.wav
+	play_square_video "6S"
+	play_epaper_video 6E.mp4
+	play_wide_video 6W.mp4
+	play_audio 6.wav
 	standby 20 1
 	safe_reset_all
 }
@@ -209,7 +209,6 @@ loop () {
 }
 
 shutdown () {
-	echo "Graceful shutdown"
 	reset_all
 }
 
