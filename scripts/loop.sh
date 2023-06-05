@@ -7,9 +7,6 @@ source $SCRIPT_DIR/common.sh
 # Base folder where all media files live
 FILES_DIR=$BASE_DIR/files
 
-# Only take nth frame from video for epaper display to get to 5fps
-EPAPER_TAKE=6
-
 print_title () {
 	figlet -f slant $1
 	echo ""
@@ -38,8 +35,12 @@ send_udp_to_arduino () {
 	elif [[ $1 -eq 3 ]]; then
 		send_udp $2 $ARDUINO_3_HOST $ARDUINO_3_PORT
 	else
-		echo "! warning: unknown arduino identifier"
+		echo "🛆  unknown arduino identifier"
 	fi
+}
+
+send_udp_to_steppers () {
+	send_udp_to_arduino 1 $1
 }
 
 play_audio () {
@@ -71,17 +72,22 @@ stop_process () {
 	pkill -INT -x $1
 }
 
+reset_motors () {
+	send_udp_to_steppers $BERLIN_ID,$BERLIN_MIN,$MAX_STEP_SPEED
+	send_udp_to_steppers $EISBERG_ID,$EISBERG_MIN,$MAX_STEP_SPEED
+	send_udp_to_steppers $FENSTER_ID,$FENSTER_MIN,$MAX_STEP_SPEED
+	send_udp_to_steppers $HONGKONG_ID,$HONGKONG_MIN,$MAX_STEP_SPEED
+}
+
 reset_except_it8951 () {
 	play_square_video ST
-	# send_udp_to_arduino 1 0 @TODO: Add standby mode here
-	# send_udp_to_arduino 2 0 @TODO: Add standby mode here
-	# send_udp_to_arduino 3 0 @TODO: Add standby mode here
 	stop_process aplay
 	stop_process mplayer
 	stop_process "sleep"
 }
 
 reset_all () {
+	reset_motors
 	reset_except_it8951
 	stop_process it8951-video
 }
@@ -100,10 +106,12 @@ safe_reset_all () {
 # 00:01:38.00
 0_prolog () {
 	print_title "prolog"
+
 	play_epaper_video 0E.mp4
 	play_square_video 0S
 	play_wide_video 0W.mp4
 	play_audio 0.wav
+
 	standby 1 39
 	safe_reset_all
 }
@@ -112,12 +120,15 @@ safe_reset_all () {
 # 00:12:28.39
 1_wasser () {
 	print_title "wasser"
+
 	play_epaper_video 1E.mp4
 	play_square_video 1S
 	play_wide_video 1W.mp4
 	play_audio 1.wav
-	# standby 5 12 && send_udp_to_arduino 1 "test" &
-	send_udp_to_arduino 1 fenster,65000,2000
+
+	send_udp_to_steppers $FENSTER_MAX_COMMAND
+	standby 5 12 && send_udp_to_steppers $FENSTER_MIN_COMMAND &
+
 	standby 12 29
 	safe_reset_all
 }
@@ -126,10 +137,12 @@ safe_reset_all () {
 # 00:05:53.13
 2_sonne () {
 	print_title "sonne"
+
 	play_epaper_video 2E.mp4
 	play_square_video 2S
 	play_wide_video 2W.mp4
 	play_audio 2.wav
+
 	standby 5 54
 	safe_reset_all
 }
@@ -138,11 +151,14 @@ safe_reset_all () {
 # 00:07:19.58
 3_wind () {
 	print_title "wind"
+
 	play_epaper_video 3E.mp4
 	play_square_video 3S
 	play_wide_video 3W.mp4
 	play_audio 3.wav
-	send_udp_to_arduino 1 hongkong,42000,1200
+
+	send_udp_to_steppers $HONGKONG_MAX_COMMAND
+
 	standby 7 20
 	safe_reset_all
 }
@@ -151,10 +167,14 @@ safe_reset_all () {
 # 00:05:20.24
 4_anbahnung_der_revolution () {
 	print_title "anbahnung"
+
 	play_epaper_video 4E.mp4
 	play_square_video 4S
 	play_wide_video 4W.mp4
 	play_audio 4.wav
+
+	standby 2 0 && send_udp_to_steppers $HONGKONG_MIN_COMMAND &
+
 	standby 5 21
 	safe_reset_all
 }
@@ -163,11 +183,15 @@ safe_reset_all () {
 # 00:03:16.86
 5_feuer () {
 	print_title "feuer"
+
 	play_epaper_video 5E.mp4
 	play_square_video 5S
 	play_wide_video 5W.mp4
 	play_audio 5.wav
-	send_udp_to_arduino 1 eisberg,65000,1000
+
+	send_udp_to_steppers $EISBERG_MAX_COMMAND
+	standby 1 30 && send_udp_to_steppers $EISBERG_MIN_COMMAND &
+
 	standby 3 18
 	safe_reset_all
 }
@@ -176,11 +200,15 @@ safe_reset_all () {
 # 00:20:00.00
 6_revolution () {
 	print_title "revolution"
+
 	play_epaper_video 6E.mp4
 	play_square_video 6S
 	play_wide_video 6W.mp4
 	play_audio 6.wav
-	send_udp_to_arduino 1 berlin,53000,1400
+
+	send_udp_to_steppers $BERLIN_MAX_COMMAND
+	standby 17 10 && send_udp_to_steppers $BERLIN_MIN_COMMAND &
+
 	standby 20 1
 	safe_reset_all
 }
@@ -206,6 +234,9 @@ shutdown () {
 # Set up a trap to always run shutdown function before we exit script
 trap shutdown EXIT
 
+# Move all motors to initial positions
+reset_motors
+
 # Make sure to reset all processes before, just to be safe
 safe_reset_all
 
@@ -226,5 +257,5 @@ elif [[ $1 -eq 5 ]]; then
 elif [[ $1 -eq 6 ]]; then
 	6_revolution
 else
-	echo "! unknown chapter selected"
+	echo "🛆  unknown chapter selected"
 fi
