@@ -19,7 +19,10 @@ if [[ "$(tmux ls 2> /dev/null | grep $TMUX_SESSION)" != "" ]]; then
 fi
 
 echo "🢒 Setup screen"
-xrandr --output $SCREEN_OUTPUT --rotate $SCREEN_ROTATION
+# xrandr
+# HDMI2 connected 1480x320+0+0 left (normal left inverted right x axis y axis)
+# 1480mm x 480mm 320x1480      60.08*+  60.04
+xrandr --output $SCREEN_OUTPUT --rotate $SCREEN_ROTATION --mode 1480x320 --rate 60.08
 
 echo "🢒 Start installation loop inside session"
 tmux new-session -d -t $TMUX_SESSION
