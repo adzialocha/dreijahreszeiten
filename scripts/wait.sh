@@ -13,6 +13,7 @@ if [[ -z "$SKIP_WAIT" ]]; then
 fi
 
 # Wait a little bit more just to be sure
+echo "🢒 Wait for 10 seconds"
 sleep 10
 
 # Clear terminal just because it is nice

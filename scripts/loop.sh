@@ -43,6 +43,14 @@ send_udp_to_steppers () {
 	send_udp_to_arduino 1 $1
 }
 
+send_udp_to_servo_and_rotation () {
+	send_udp_to_arduino 2 $1
+}
+
+send_udp_to_led () {
+	send_udp_to_arduino 3 $1
+}
+
 play_audio () {
 	echo "▶ [audio] play $1"
 	stop_process aplay
@@ -66,6 +74,19 @@ play_epaper_video () {
 	it8951-video --take $EPAPER_TAKE $FILES_DIR/video-epaper/$1 &> /dev/null &
 	# Make the others wait a little bit since the display takes some time to start
 	sleep 0.5
+}
+
+random_camera_action () {
+	seconds=$((($1 * 60) + $2))
+	start_at=$(date +%s)
+	end_at=$(($start_at + $seconds))
+	while [ $(date +%s) -lt $end_at ]
+	do
+		value=$(shuf -i $4-$5 -n 1)
+		sleep_value=$(seq 0.25 .01 1 | shuf | head -n1)
+		send_udp_to_servo_and_rotation $3,$value
+		sleep $sleep_value
+	done
 }
 
 stop_process () {
@@ -128,6 +149,8 @@ safe_reset_all () {
 
 	send_udp_to_steppers $FENSTER_MAX_COMMAND
 	standby 5 57 && send_udp_to_steppers $FENSTER_MIN_COMMAND &
+	standby 7 30 && random_camera_action 0 5 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
+	standby 7 30 && random_camera_action 0 8 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
 
 	standby 12 29
 	safe_reset_all
@@ -143,6 +166,9 @@ safe_reset_all () {
 	play_wide_video 2W.mp4
 	play_audio 2.wav
 
+	standby 3 30 && random_camera_action 0 5 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
+	standby 3 30 && random_camera_action 0 5 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
+
 	standby 5 54
 	safe_reset_all
 }
@@ -157,7 +183,9 @@ safe_reset_all () {
 	play_wide_video 3W.mp4
 	play_audio 3.wav
 
+	standby 3 51 && send_udp_to_servo_and_rotation schiff_an &
 	standby 4 50 && send_udp_to_steppers $HONGKONG_MAX_COMMAND &
+	standby 7 20 && send_udp_to_servo_and_rotation schiff_aus &
 
 	standby 7 20
 	safe_reset_all
@@ -173,7 +201,13 @@ safe_reset_all () {
 	play_wide_video 4W.mp4
 	play_audio 4.wav
 
+	standby 0 59 && random_camera_action 0 23 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
+	standby 0 59 && random_camera_action 0 23 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
 	standby 1 55 && send_udp_to_steppers $HONGKONG_MIN_COMMAND &
+	standby 2 30 && random_camera_action 0 28 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
+	standby 2 30 && random_camera_action 0 28 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
+	standby 4 8 && random_camera_action 0 46 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
+	standby 4 8 && random_camera_action 0 46 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
 
 	standby 5 21
 	safe_reset_all
@@ -189,8 +223,8 @@ safe_reset_all () {
 	play_wide_video 5W.mp4
 	play_audio 5.wav
 
-	send_udp_to_steppers $EISBERG_MAX_COMMAND
-	standby 1 40 && send_udp_to_steppers $EISBERG_MIN_COMMAND &
+	send_udp_to_steppers $EISBERG_MIN_COMMAND
+	standby 1 40 && send_udp_to_steppers $EISBERG_MAX_COMMAND &
 
 	standby 3 18
 	safe_reset_all
@@ -207,6 +241,12 @@ safe_reset_all () {
 	play_audio 6.wav
 
 	send_udp_to_steppers $BERLIN_MAX_COMMAND
+	standby 2 30 && random_camera_action 0 2 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
+	standby 2 30 && random_camera_action 0 2 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
+	standby 7 30 && random_camera_action 0 5 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
+	standby 7 30 && random_camera_action 0 8 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
+	standby 10 51 && send_udp_to_servo_and_rotation schiff_an &
+	standby 11 00  && send_udp_to_servo_and_rotation schiff_aus &
 	standby 18 30 && send_udp_to_steppers $BERLIN_MIN_COMMAND &
 
 	standby 20 1
