@@ -127,7 +127,7 @@ safe_reset_all () {
 	play_audio 1.wav
 
 	send_udp_to_steppers $FENSTER_MAX_COMMAND
-	standby 5 12 && send_udp_to_steppers $FENSTER_MIN_COMMAND &
+	standby 5 57 && send_udp_to_steppers $FENSTER_MIN_COMMAND &
 
 	standby 12 29
 	safe_reset_all
@@ -157,7 +157,7 @@ safe_reset_all () {
 	play_wide_video 3W.mp4
 	play_audio 3.wav
 
-	send_udp_to_steppers $HONGKONG_MAX_COMMAND
+	standby 4 50 && send_udp_to_steppers $HONGKONG_MAX_COMMAND &
 
 	standby 7 20
 	safe_reset_all
@@ -173,7 +173,7 @@ safe_reset_all () {
 	play_wide_video 4W.mp4
 	play_audio 4.wav
 
-	standby 2 0 && send_udp_to_steppers $HONGKONG_MIN_COMMAND &
+	standby 1 55 && send_udp_to_steppers $HONGKONG_MIN_COMMAND &
 
 	standby 5 21
 	safe_reset_all
@@ -190,7 +190,7 @@ safe_reset_all () {
 	play_audio 5.wav
 
 	send_udp_to_steppers $EISBERG_MAX_COMMAND
-	standby 1 30 && send_udp_to_steppers $EISBERG_MIN_COMMAND &
+	standby 1 40 && send_udp_to_steppers $EISBERG_MIN_COMMAND &
 
 	standby 3 18
 	safe_reset_all
@@ -207,7 +207,7 @@ safe_reset_all () {
 	play_audio 6.wav
 
 	send_udp_to_steppers $BERLIN_MAX_COMMAND
-	standby 17 10 && send_udp_to_steppers $BERLIN_MIN_COMMAND &
+	standby 18 30 && send_udp_to_steppers $BERLIN_MIN_COMMAND &
 
 	standby 20 1
 	safe_reset_all
