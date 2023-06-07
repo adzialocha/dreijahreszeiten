@@ -93,3 +93,7 @@ KAMERA_R_MAX=170
 # Schiff
 SCHIFF_ENABLE=schiff_an
 SCHIFF_DISABLE=schiff_aus
+
+# Wind (Gebläse)
+WIND_ENABLE=wind_an
+WIND_DISABLE=wind_aus

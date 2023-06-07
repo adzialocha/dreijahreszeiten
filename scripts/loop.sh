@@ -134,6 +134,14 @@ disable_schiff () {
 	send_udp_to_servo_and_rotation $SCHIFF_DISABLE
 }
 
+enable_wind () {
+	send_udp_to_servo_and_rotation $WIND_ENABLE
+}
+
+disable_wind () {
+	send_udp_to_servo_and_rotation $WIND_DISABLE
+}
+
 reset_motors () {
 	send_udp_to_steppers $BERLIN_ID,$BERLIN_MIN,$MAX_STEP_SPEED
 	send_udp_to_steppers $EISBERG_ID,$EISBERG_MIN,$MAX_STEP_SPEED
@@ -142,6 +150,7 @@ reset_motors () {
 	send_udp_to_servo_and_rotation $KAMERA_L_ID,$KAMERA_STANDBY
 	send_udp_to_servo_and_rotation $KAMERA_R_ID,$KAMERA_STANDBY
 	disable_schiff
+	disable_wind
 }
 
 stop_process () {
@@ -230,7 +239,7 @@ safe_reset_all () {
 	play_audio 3.wav
 
 	wait_until 3 51 && enable_schiff &
-	wait_until 4 50 && move_hong_kong_up &
+	wait_until 4 50 && enable_wind && move_hong_kong_up &
 	wait_until 7 20 && disable_schiff &
 
 	wait_until 7 20
@@ -249,6 +258,7 @@ safe_reset_all () {
 
 	wait_until 0 59 && move_all_cameras_randomly 0 23 &
 	wait_until 1 55 && move_hong_kong_down &
+	wait_until 2 25 && disable_wind &
 	wait_until 2 30 && move_all_cameras_randomly 0 28 &
 	wait_until 4 8 && move_all_cameras_randomly 0 46 &
 
@@ -287,7 +297,7 @@ safe_reset_all () {
 	wait_until 2 30 && move_all_cameras_randomly 0 2 &
 	wait_until 7 30 && move_all_cameras_randomly 0 5 &
 	wait_until 10 51 && enable_schiff &
-	wait_until 11 00  && disable_schiff &
+	wait_until 11 00 && disable_schiff &
 	wait_until 18 30 && move_berlin_down &
 
 	wait_until 20 1
