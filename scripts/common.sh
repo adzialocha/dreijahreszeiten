@@ -47,6 +47,9 @@ ARDUINO_3_PORT=8888
 # ePaper
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# Clear the screen from ghosting artifacts every nth frame
+EPAPER_GHOST=64
+
 # Only take nth frame from 30fps video for epaper display to get to 5fps
 EPAPER_TAKE=6
 
