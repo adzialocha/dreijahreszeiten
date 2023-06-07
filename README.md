@@ -13,10 +13,10 @@ Linux setup and control scripts to run "Die drei Jahreszeiten" theater installat
 * X11 with `xinit` and `xterm`
 * `mplayer`
 * `aplay`
-* [it8951-video](https://github.com/adzialocha/it8951-video)
 * `figlet`
-* `bash`
 * `tmux`
+* [it8951-video](https://github.com/adzialocha/it8951-video)
+* [rkpzavav](https://github.com/adzialocha/romans-kleines-programm-zum-abspielen-von-avi-videos)
 
 ### Clone repository in home folder
 
@@ -49,3 +49,9 @@ ln -s ./dreijahreszeiten/.bashrc .
     ExecStart=-/sbin/agetty --noissue --autologin <your user name> %I $TERM
     Type=idle
     ```
+
+### Disable audio powersave mode to prevent clicking noise
+
+```bash
+echo "options snd_hda_intel power_save=0" | sudo tee -a /etc/modprobe.d/audio_disable_powersave.conf
+```
