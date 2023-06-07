@@ -18,10 +18,9 @@ echo "🢒 Setup screen"
 # xrandr
 # HDMI2 connected 1480x320+0+0 left (normal left inverted right x axis y axis)
 # 1480mm x 480mm 320x1480      60.08*+  60.04
-
-# xrandr --newmode "wide" 39.65  320 344 376 432  1480 1481 1484 1531  -HSync +Vsync
-# xrandr --addmode $SCREEN_OUTPUT "wide"
-xrandr --output $SCREEN_OUTPUT --pos 0x0 --auto --rotate $SCREEN_ROTATION # --output $SCREEN_2_OUTPUT --pos 0x0 --auto --rotate $SCREEN_ROTATION --same-as $SCREEN_2_OUTPUT
+xrandr --newmode "wide" 66.00 320 665 669 727 1480 1496 1500 1512 -hsync -vsync
+xrandr --addmode $SCREEN_OUTPUT "wide"
+xrandr --output $SCREEN_OUTPUT --pos 0x0 --mode "wide" --auto --rotate $SCREEN_ROTATION
 
 echo "🢒 Start installation loop inside session"
 tmux new-session -d -t $TMUX_SESSION
