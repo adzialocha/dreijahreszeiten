@@ -31,18 +31,39 @@ ln -s ./dreijahreszeiten/.bashrc .
 # etc.
 ```
 
+### Setup static IP address
+
+Edit `/etc/netplan/00-installer-config.yaml`
+
+```yaml
+network:
+  version: 2
+  ethernets:
+    eno1:
+      optional: true
+      dhcp4: false
+      dhcp6: false
+      addresses:
+        - 192.168.1.100/24
+      nameservers:
+        addresses: 
+          - 192.168.1.1
+          - 8.8.8.8
+      routes:
+        - to: default
+          via: 192.168.1.1
+```
+
 ### Enable auto login
 
 1. Edit `/etc/systemd/logind.conf`
-2. Change `NAutoVTs` to `6` and `ReserveVT` to `7`, uncomment both of them
-3. Create the following folder and edit the `override.conf` file:
+2. Change values to `NAutoVTs=6` and `ReserveVT=7`, uncomment both of them
+3. Create the following folder and edit `override.conf` file:
     ```bash
     sudo mkdir /etc/systemd/system/getty@tty1.service.d/
     sudo vim /etc/systemd/system/getty@tty1.service.d/override.conf
     ```
-
     Contents of `override.conf`:
-
     ```
     [Service]
     ExecStart=
