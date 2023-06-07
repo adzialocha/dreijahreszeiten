@@ -176,7 +176,7 @@ safe_reset_all () {
 	if [[ -n "$is_running" ]]; then
 		stop_process it8951-video
 		# Wait a little for epaper to become ready again
-		sleep 0.5
+		sleep 1
 	fi
 }
 
