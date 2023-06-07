@@ -76,6 +76,30 @@ play_epaper_video () {
 	sleep 0.5
 }
 
+set_spot_light () {
+	send_udp_to_led spot,$1,$2
+}
+
+eisberg_spot_light_sequence () {
+	seconds=$((($1 * 60) + $2 - 17))
+	start_at=$(date +%s)
+	end_at=$(($start_at + $seconds))
+	# Slower fade in at the beginning
+	set_spot_light 170 50
+	sleep 8.5
+	# Flickering but full spot light
+	while [ $(date +%s) -lt $end_at ]
+	do
+		set_spot_light 255 5
+		sleep 0.425
+		set_spot_light 170 5
+		sleep 0.425
+	done
+	# Slower fade out at the end
+	set_spot_light 0 50
+	sleep 8.5
+}
+
 move_single_camera_randomly () {
 	seconds=$((($1 * 60) + $2))
 	start_at=$(date +%s)
@@ -103,11 +127,11 @@ move_berlin_down () {
 }
 
 move_eisberg_back () {
-	send_udp_to_steppers $EISBERG_ID,$EISBERG_MAX,$EISBERG_SPEED
+	send_udp_to_steppers $EISBERG_ID,$EISBERG_MIN,$EISBERG_SPEED
 }
 
 move_eisberg_front () {
-	send_udp_to_steppers $EISBERG_ID,$EISBERG_MIN,$EISBERG_SPEED
+	send_udp_to_steppers $EISBERG_ID,$EISBERG_MAX,$EISBERG_SPEED
 }
 
 move_fenster_up () {
@@ -162,12 +186,17 @@ reset_except_it8951 () {
 	stop_process aplay
 	stop_process mplayer
 	stop_process "sleep"
+	reset_lights
 }
 
 reset_all () {
 	reset_motors
 	reset_except_it8951
 	stop_process it8951-video
+}
+
+reset_lights () {
+	set_spot_light 0 1
 }
 
 safe_reset_all () {
@@ -277,7 +306,9 @@ safe_reset_all () {
 	play_audio 5.wav
 
 	move_eisberg_front
-	wait_until 1 40 && move_eisberg_back &
+	eisberg_spot_light_sequence 1 13 &
+	wait_until 2 3 && eisberg_spot_light_sequence 1 13 &
+	wait_until 2 3 && move_eisberg_back &
 
 	wait_until 3 18
 	safe_reset_all
