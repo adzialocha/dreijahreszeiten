@@ -106,6 +106,7 @@ move_single_camera_randomly () {
 	end_at=$(($start_at + $seconds))
 	while [ $(date +%s) -lt $end_at ]
 	do
+		# Pick random camera position & waiting time before next move
 		value=$(shuf -i $4-$5 -n 1)
 		sleep_value=$(seq 0.25 .01 1 | shuf | head -n1)
 		send_udp_to_servo_and_rotation $3,$value
