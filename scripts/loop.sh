@@ -87,13 +87,13 @@ eisberg_spot_light_sequence () {
 	# Slower fade in at the beginning
 	set_spot_light 170 50
 	sleep 8.5
-	# Flickering but full spot light
+	# Slightly flickering, bright spot light
 	while [ $(date +%s) -lt $end_at ]
 	do
 		set_spot_light 255 5
-		sleep 0.425
+		sleep 0.5
 		set_spot_light 170 5
-		sleep 0.425
+		sleep 0.5
 	done
 	# Slower fade out at the end
 	set_spot_light 0 50
