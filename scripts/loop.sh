@@ -12,7 +12,7 @@ print_title () {
 	echo ""
 }
 
-standby () {
+wait_until () {
 	seconds=$((($1 * 60) + $2))
 	echo "⏹ wait for $seconds seconds ($1:$2)"
 	sleep $seconds
@@ -76,7 +76,7 @@ play_epaper_video () {
 	sleep 0.5
 }
 
-random_camera_action () {
+move_single_camera_randomly () {
 	seconds=$((($1 * 60) + $2))
 	start_at=$(date +%s)
 	end_at=$(($start_at + $seconds))
@@ -89,8 +89,49 @@ random_camera_action () {
 	done
 }
 
-stop_process () {
-	pkill -INT -x $1
+move_all_cameras_randomly () {
+	move_single_camera_randomly $1 $2 $KAMERA_L_ID $KAMERA_L_MIN $KAMERA_L_MAX &
+	move_single_camera_randomly $1 $2 $KAMERA_R_ID $KAMERA_R_MIN $KAMERA_R_MAX &
+}
+
+move_berlin_up () {
+	send_udp_to_steppers $BERLIN_ID,$BERLIN_MAX,$BERLIN_SPEED
+}
+
+move_berlin_down () {
+	send_udp_to_steppers $BERLIN_ID,$BERLIN_MIN,$BERLIN_SPEED
+}
+
+move_eisberg_back () {
+	send_udp_to_steppers $EISBERG_ID,$EISBERG_MAX,$EISBERG_SPEED
+}
+
+move_eisberg_front () {
+	send_udp_to_steppers $EISBERG_ID,$EISBERG_MIN,$EISBERG_SPEED
+}
+
+move_fenster_up () {
+	send_udp_to_steppers $FENSTER_ID,$FENSTER_MAX,$FENSTER_SPEED
+}
+
+move_fenster_down () {
+	send_udp_to_steppers $FENSTER_ID,$FENSTER_MIN,$FENSTER_SPEED
+}
+
+move_hong_kong_up () {
+	send_udp_to_steppers $HONGKONG_ID,$HONGKONG_MAX,$HONGKONG_SPEED
+}
+
+move_hong_kong_down () {
+	send_udp_to_steppers $HONGKONG_ID,$HONGKONG_MIN,$HONGKONG_SPEED
+}
+
+enable_schiff () {
+	send_udp_to_servo_and_rotation $SCHIFF_ENABLE
+}
+
+disable_schiff () {
+	send_udp_to_servo_and_rotation $SCHIFF_DISABLE
 }
 
 reset_motors () {
@@ -98,6 +139,13 @@ reset_motors () {
 	send_udp_to_steppers $EISBERG_ID,$EISBERG_MIN,$MAX_STEP_SPEED
 	send_udp_to_steppers $FENSTER_ID,$FENSTER_MIN,$MAX_STEP_SPEED
 	send_udp_to_steppers $HONGKONG_ID,$HONGKONG_MIN,$MAX_STEP_SPEED
+	send_udp_to_servo_and_rotation $KAMERA_L_ID,$KAMERA_STANDBY
+	send_udp_to_servo_and_rotation $KAMERA_R_ID,$KAMERA_STANDBY
+	disable_schiff
+}
+
+stop_process () {
+	pkill -INT -x $1
 }
 
 reset_except_it8951 () {
@@ -133,7 +181,7 @@ safe_reset_all () {
 	play_wide_video 0W.mp4
 	play_audio 0.wav
 
-	standby 1 39
+	wait_until 1 39
 	safe_reset_all
 }
 
@@ -147,12 +195,11 @@ safe_reset_all () {
 	play_wide_video 1W.mp4
 	play_audio 1.wav
 
-	send_udp_to_steppers $FENSTER_MAX_COMMAND
-	standby 5 57 && send_udp_to_steppers $FENSTER_MIN_COMMAND &
-	standby 7 30 && random_camera_action 0 5 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
-	standby 7 30 && random_camera_action 0 8 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
+	move_fenster_up
+	wait_until 5 57 && move_fenster_down &
+	wait_until 7 30 && move_all_cameras_randomly 0 5 &
 
-	standby 12 29
+	wait_until 12 29
 	safe_reset_all
 }
 
@@ -166,10 +213,9 @@ safe_reset_all () {
 	play_wide_video 2W.mp4
 	play_audio 2.wav
 
-	standby 3 30 && random_camera_action 0 5 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
-	standby 3 30 && random_camera_action 0 5 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
+	wait_until 3 30 && move_all_cameras_randomly 0 5 &
 
-	standby 5 54
+	wait_until 5 54
 	safe_reset_all
 }
 
@@ -183,11 +229,11 @@ safe_reset_all () {
 	play_wide_video 3W.mp4
 	play_audio 3.wav
 
-	standby 3 51 && send_udp_to_servo_and_rotation schiff_an &
-	standby 4 50 && send_udp_to_steppers $HONGKONG_MAX_COMMAND &
-	standby 7 20 && send_udp_to_servo_and_rotation schiff_aus &
+	wait_until 3 51 && enable_schiff &
+	wait_until 4 50 && move_hong_kong_up &
+	wait_until 7 20 && disable_schiff &
 
-	standby 7 20
+	wait_until 7 20
 	safe_reset_all
 }
 
@@ -201,15 +247,12 @@ safe_reset_all () {
 	play_wide_video 4W.mp4
 	play_audio 4.wav
 
-	standby 0 59 && random_camera_action 0 23 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
-	standby 0 59 && random_camera_action 0 23 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
-	standby 1 55 && send_udp_to_steppers $HONGKONG_MIN_COMMAND &
-	standby 2 30 && random_camera_action 0 28 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
-	standby 2 30 && random_camera_action 0 28 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
-	standby 4 8 && random_camera_action 0 46 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
-	standby 4 8 && random_camera_action 0 46 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
+	wait_until 0 59 && move_all_cameras_randomly 0 23 &
+	wait_until 1 55 && move_hong_kong_down &
+	wait_until 2 30 && move_all_cameras_randomly 0 28 &
+	wait_until 4 8 && move_all_cameras_randomly 0 46 &
 
-	standby 5 21
+	wait_until 5 21
 	safe_reset_all
 }
 
@@ -223,10 +266,10 @@ safe_reset_all () {
 	play_wide_video 5W.mp4
 	play_audio 5.wav
 
-	send_udp_to_steppers $EISBERG_MIN_COMMAND
-	standby 1 40 && send_udp_to_steppers $EISBERG_MAX_COMMAND &
+	move_eisberg_front
+	wait_until 1 40 && move_eisberg_back &
 
-	standby 3 18
+	wait_until 3 18
 	safe_reset_all
 }
 
@@ -240,16 +283,14 @@ safe_reset_all () {
 	play_wide_video 6W.mp4
 	play_audio 6.wav
 
-	send_udp_to_steppers $BERLIN_MAX_COMMAND
-	standby 2 30 && random_camera_action 0 2 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
-	standby 2 30 && random_camera_action 0 2 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
-	standby 7 30 && random_camera_action 0 5 kamera_l $KAMERA_L_MIN $KAMERA_L_MAX &
-	standby 7 30 && random_camera_action 0 8 kamera_r $KAMERA_R_MIN $KAMERA_R_MAX &
-	standby 10 51 && send_udp_to_servo_and_rotation schiff_an &
-	standby 11 00  && send_udp_to_servo_and_rotation schiff_aus &
-	standby 18 30 && send_udp_to_steppers $BERLIN_MIN_COMMAND &
+	move_berlin_up
+	wait_until 2 30 && move_all_cameras_randomly 0 2 &
+	wait_until 7 30 && move_all_cameras_randomly 0 5 &
+	wait_until 10 51 && enable_schiff &
+	wait_until 11 00  && disable_schiff &
+	wait_until 18 30 && move_berlin_down &
 
-	standby 20 1
+	wait_until 20 1
 	safe_reset_all
 }
 
