@@ -11,6 +11,17 @@ TMUX_SESSION=dreijahreszeiten
 BASE_DIR=$HOME/dreijahreszeiten
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Screen
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Wide screen
+SCREEN_ROTATION=left
+SCREEN_OUTPUT=HDMI2
+
+# Mirrored screen
+SCREEN_2_OUTPUT=HDMI2
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Network
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
