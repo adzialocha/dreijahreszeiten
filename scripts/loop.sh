@@ -198,6 +198,8 @@ reset_all () {
 
 reset_lights () {
 	set_spot_light 0 1
+	send_udp_to_led feuer_aus
+	send_udp_to_led prolog_aus
 }
 
 safe_reset_all () {
@@ -219,6 +221,9 @@ safe_reset_all () {
 	play_square_video 0S
 	play_wide_video 0W.mp4
 	play_audio 0.wav
+
+	send_udp_to_led prolog_an
+	wait_until 1 39 && send_udp_to_led prolog_aus &
 
 	wait_until 1 39
 	safe_reset_all
@@ -308,8 +313,10 @@ safe_reset_all () {
 
 	move_eisberg_front
 	eisberg_spot_light_sequence 1 13 &
+	wait_until 0 1 && send_udp_to_led feuer_an &
 	wait_until 2 3 && eisberg_spot_light_sequence 1 13 &
 	wait_until 2 3 && move_eisberg_back &
+	wait_until 3 18 && send_udp_to_led feuer_aus &
 
 	wait_until 3 18
 	safe_reset_all
