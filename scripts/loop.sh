@@ -262,6 +262,7 @@ safe_reset_all () {
 	play_audio 2.wav
 
 	send_udp_to_led sonne_an
+	wait_until 1 30 && move_all_cameras_randomly 0 2 &
 	wait_until 3 30 && move_all_cameras_randomly 0 5 &
 	wait_until 5 53 && send_udp_to_led sonne_aus &
 
