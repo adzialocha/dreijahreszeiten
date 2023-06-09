@@ -4,6 +4,9 @@
 # General
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# Start the installation at this time of the day (HH, 0-23)
+START_HOUR=12
+
 # Name of the tmux session
 TMUX_SESSION=dreijahreszeiten
 

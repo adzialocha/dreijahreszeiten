@@ -4,10 +4,21 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source $SCRIPT_DIR/common.sh
 
-# Wait for the network to be ready
+wait_until_online () {
+	while ! nc -z $1 $2; do
+		sleep 0.5
+	done
+}
+
+# Wait for everything to be ready
 if [[ -z "$SKIP_WAIT" ]]; then
 	echo "🢒 Wait for network"
-	while ! nc -z $ARDUINO_1_HOST $ARDUINO_1_PORT; do
+	wait_until_online $ARDUINO_1_HOST $ARDUINO_1_PORT
+	wait_until_online $ARDUINO_2_HOST $ARDUINO_2_PORT
+	wait_until_online $ARDUINO_3_HOST $ARDUINO_3_PORT
+	wait_until_online $BRIGHT_SIGN_HOST $BRIGHT_SIGN_PORT
+	echo "🢒 Wait for the right time to start installation (from $START_HOUR)"
+	while [[ $(date +"%H") -lt $START_HOUR ]]; do
 		sleep 0.5
 	done
 fi
