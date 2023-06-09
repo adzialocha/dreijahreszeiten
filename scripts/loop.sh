@@ -198,8 +198,10 @@ reset_all () {
 
 reset_lights () {
 	set_spot_light 0 1
-	send_udp_to_led feuer_aus
+	send_udp_to_led wasser_aus
 	send_udp_to_led prolog_aus
+	send_udp_to_led sonne_aus
+	send_udp_to_led feuer_aus
 }
 
 safe_reset_all () {
@@ -242,6 +244,8 @@ safe_reset_all () {
 	move_fenster_up
 	wait_until 5 57 && move_fenster_down &
 	wait_until 7 30 && move_all_cameras_randomly 0 5 &
+	wait_until 8 0 && send_udp_to_led wasser_an &
+	wait_until 12 28 && send_udp_to_led wasser_aus &
 
 	wait_until 12 29
 	safe_reset_all
@@ -257,7 +261,9 @@ safe_reset_all () {
 	play_wide_video 2W.mp4
 	play_audio 2.wav
 
+	send_udp_to_led sonne_an
 	wait_until 3 30 && move_all_cameras_randomly 0 5 &
+	wait_until 5 53 && send_udp_to_led sonne_aus &
 
 	wait_until 5 54
 	safe_reset_all
@@ -316,9 +322,9 @@ safe_reset_all () {
 	wait_until 0 1 && send_udp_to_led feuer_an &
 	wait_until 2 3 && eisberg_spot_light_sequence 1 13 &
 	wait_until 2 3 && move_eisberg_back &
-	wait_until 3 18 && send_udp_to_led feuer_aus &
+	wait_until 3 16 && send_udp_to_led feuer_aus &
 
-	wait_until 3 18
+	wait_until 3 17
 	safe_reset_all
 }
 
@@ -334,10 +340,14 @@ safe_reset_all () {
 
 	move_berlin_up
 	wait_until 2 30 && move_all_cameras_randomly 0 2 &
+	wait_until 6 49 && send_udp_to_led prolog_an &
+	wait_until 7 0 && send_udp_to_led prolog_aus &
 	wait_until 7 30 && move_all_cameras_randomly 0 5 &
 	wait_until 10 51 && enable_schiff &
 	wait_until 11 00 && disable_schiff &
+	wait_until 15 43 && send_udp_to_led prolog_an &
 	wait_until 18 30 && move_berlin_down &
+	wait_until 18 47 && send_udp_to_led prolog_aus &
 
 	wait_until 20 1
 	safe_reset_all
