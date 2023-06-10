@@ -347,15 +347,14 @@ safe_reset_all () {
 	move_berlin_up
 	send_udp_to_led revolution_an
 	wait_until 2 30 && move_all_cameras_randomly 0 2 &
-	wait_until 6 49 && send_udp_to_led prolog_an &
-	wait_until 7 0 && send_udp_to_led prolog_aus &
+	wait_until 6 49 && send_udp_to_led revolution_aus && send_udp_to_led prolog_an &
+	wait_until 7 0 && send_udp_to_led prolog_aus && send_udp_to_led revolution_an &
 	wait_until 7 30 && move_all_cameras_randomly 0 5 &
 	wait_until 10 51 && enable_schiff &
 	wait_until 11 00 && disable_schiff &
 	wait_until 15 43 && send_udp_to_led prolog_an &
 	wait_until 18 30 && move_berlin_down &
 	wait_until 18 47 && send_udp_to_led prolog_aus &
-	wait_until 20 0 && send_udp_to_led revolution_aus &
 
 	wait_until 20 1
 	safe_reset_all
