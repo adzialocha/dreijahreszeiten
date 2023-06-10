@@ -201,7 +201,9 @@ reset_lights () {
 	send_udp_to_led wasser_aus
 	send_udp_to_led prolog_aus
 	send_udp_to_led sonne_aus
+	send_udp_to_led wut_aus
 	send_udp_to_led feuer_aus
+	send_udp_to_led revolution_aus
 }
 
 safe_reset_all () {
@@ -242,7 +244,7 @@ safe_reset_all () {
 	play_audio 1.wav
 
 	move_fenster_up
-	wait_until 5 57 && move_fenster_down &
+	wait_until 6 18 && move_fenster_down &
 	wait_until 7 30 && move_all_cameras_randomly 0 5 &
 	wait_until 8 0 && send_udp_to_led wasser_an &
 	wait_until 12 28 && send_udp_to_led wasser_aus &
@@ -299,11 +301,13 @@ safe_reset_all () {
 	play_wide_video 4W.mp4
 	play_audio 4.wav
 
+	send_udp_to_led wut_an
 	wait_until 0 59 && move_all_cameras_randomly 0 23 &
 	wait_until 1 55 && move_hong_kong_down &
 	wait_until 2 25 && disable_wind &
 	wait_until 2 30 && move_all_cameras_randomly 0 28 &
 	wait_until 4 8 && move_all_cameras_randomly 0 46 &
+	wait_until 5 20 && send_udp_to_led wut_aus &
 
 	wait_until 5 21
 	safe_reset_all
@@ -341,6 +345,7 @@ safe_reset_all () {
 	play_audio 6.wav
 
 	move_berlin_up
+	send_udp_to_led revolution_an
 	wait_until 2 30 && move_all_cameras_randomly 0 2 &
 	wait_until 6 49 && send_udp_to_led prolog_an &
 	wait_until 7 0 && send_udp_to_led prolog_aus &
@@ -350,6 +355,7 @@ safe_reset_all () {
 	wait_until 15 43 && send_udp_to_led prolog_an &
 	wait_until 18 30 && move_berlin_down &
 	wait_until 18 47 && send_udp_to_led prolog_aus &
+	wait_until 20 0 && send_udp_to_led revolution_aus &
 
 	wait_until 20 1
 	safe_reset_all
