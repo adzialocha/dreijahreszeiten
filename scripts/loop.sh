@@ -281,7 +281,8 @@ safe_reset_all () {
 	play_audio 3.wav
 
 	wait_until 3 51 && enable_schiff &
-	wait_until 4 50 && enable_wind && move_hong_kong_up &
+	wait_until 4 50 && send_udp_to_led prolog_an && enable_wind && move_hong_kong_up &
+	wait_until 4 52 && send_udp_to_led prolog_aus &
 	wait_until 7 20 && disable_schiff &
 
 	wait_until 7 20
