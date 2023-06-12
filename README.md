@@ -1,6 +1,6 @@
 # dreijahreszeiten
 
-Linux setup and control scripts to run ["Die drei Jahreszeiten"](https://www.romanhagenbrock.de/footage/die-drei-jahreszeiten) diorama / multimedia installation with all connected peripherals: 3x Audio Speakers, Waveshare 7.8inch e-Paper HAT via IT8951 controller, 3x Waveshare 11.9inch LCD via HDMI, 3x Arduino Nano controlling motors via Ethernet, 90x90cm LCD display with BrightSign controller via Ethernet.
+Linux setup and [control scripts](/scripts/loop.sh) to run ["Die drei Jahreszeiten"](https://www.romanhagenbrock.de/footage/die-drei-jahreszeiten) diorama / multimedia installation with all connected peripherals: 3x Audio Speakers, Waveshare 7.8inch e-Paper HAT via IT8951 controller, 3x Waveshare 11.9inch LCD via HDMI, 3x Arduino Nano controlling motors via Ethernet, 90x90cm LCD display with BrightSign controller via Ethernet.
 
 ## Setup
 
