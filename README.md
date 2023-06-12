@@ -69,12 +69,12 @@ network:
 
 1. Edit `/etc/systemd/logind.conf`
 2. Change values to `NAutoVTs=6` and `ReserveVT=7`, uncomment both of them
-3. Create the following folder and edit `override.conf` file:
+3. Create the following folder:
     ```bash
     sudo mkdir /etc/systemd/system/getty@tty1.service.d/
     sudo vim /etc/systemd/system/getty@tty1.service.d/override.conf
     ```
-    Contents of `override.conf`:
+4. Edit contents of `override.conf` file:
     ```
     [Service]
     ExecStart=
