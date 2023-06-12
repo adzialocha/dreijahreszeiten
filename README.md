@@ -1,11 +1,20 @@
 # dreijahreszeiten
 
-Linux setup and control scripts to run "Die drei Jahreszeiten" theater installation with all connected peripherals: 3x Audio Speakers, Waveshare 7.8inch e-Paper HAT via IT8951 controller, 3x Waveshare 11.9inch LCD via HDMI, 3x Arduino Nano controlling motors via Ethernet, 90x90cm LCD display with BrightSign controller via Ethernet.
+Linux setup and control scripts to run ["Die drei Jahreszeiten"](https://www.romanhagenbrock.de/footage/die-drei-jahreszeiten) diorama / multimedia installation with all connected peripherals: 3x Audio Speakers, Waveshare 7.8inch e-Paper HAT via IT8951 controller, 3x Waveshare 11.9inch LCD via HDMI, 3x Arduino Nano controlling motors via Ethernet, 90x90cm LCD display with BrightSign controller via Ethernet.
 
 ## Setup
 
 * Tested on ASRock DeskMini 310 with Intel Core i7 8700T CPU, Samsung 970 Evo Plus 500GB and 16GB G.Skill Ripjaws memory
 * Operating System: Ubuntu Server 22.04.2
+* SSH for remote access
+
+## Network
+
+* `192.168.1.100` Main computer
+* `192.168.1.111` Bright Sign LCD Screen
+* `192.168.1.112` Arduino Nano (Servo & Rotation Motors)
+* `192.168.1.113` Arduino Nano (Stepper Motors)
+* `192.168.1.114` Arduino Nano (LEDs)
 
 ### Install dependencies
 
@@ -55,6 +64,8 @@ network:
 ```
 
 ### Enable auto login
+
+> Read more: https://ostechnix.com/ubuntu-automatic-login/
 
 1. Edit `/etc/systemd/logind.conf`
 2. Change values to `NAutoVTs=6` and `ReserveVT=7`, uncomment both of them
